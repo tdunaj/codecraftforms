@@ -1,0 +1,88 @@
+<form #f="ngForm" (ngSubmit)="onSubmit()" novalidate class="col-md-6 mb-3">
+  
+  <fieldset class="col-md-6 mb-3" ngModelGroup="name">
+    <div class="form-group">
+      <label>First Name</label>
+      <input type="text" 
+            class="form-control" 
+            name="firstName" 
+            [(ngModel)]="model.firstName" 
+            required 
+            #firstName="ngModel"
+            [ngClass]="{
+              'is-invalid': firstName.invalid && (firstName.dirty || firstName.touched),
+              'is-valid': firstName.valid && (firstName.dirty || firstName.touched)
+            }">
+      <div class="invalid-feedback">First Name is required</div>
+    </div>
+  
+    <div class="form-group">
+      <label>Last Name</label>
+      <input type="text"
+            class="form-control" 
+            name="lastName" 
+            [(ngModel)]="model.lastName" 
+            required 
+            #lastName="ngModel"
+            [ngClass]="{
+              'is-invalid': lastName.invalid && (lastName.dirty || lastName.touched),
+              'is-valid': lastName.valid && (lastName.dirty || lastName.touched)
+            }">
+      <div class="invalid-feedback">Last Name is required</div>
+    </div>
+  </fieldset>
+
+  <div class="form-group col-md-6 mb-3">
+      <label>Email</label>
+      <input type="email" 
+            class="form-control" 
+            name="email"
+            [(ngModel)]="model.email"  
+            required 
+            pattern="[^ @]*@[^ @]*"
+            #email="ngModel"
+            [ngClass]="{
+              'is-invalid': email.invalid && (email.dirty || email.touched),
+              'is-valid': email.valid && (email.dirty || email.touched)
+        }">
+      <div class="invalid-feedback">
+        <p *ngIf="email.errors?.required">Email is required</p>
+        <p *ngIf="email.errors?.pattern">The email address must contain at least the @ character</p>
+      </div>
+    </div>
+
+    <div class="form-group col-md-6 mb-3">
+      <label>Password</label>
+      <input type="password" 
+              class="form-control" 
+              name="password"
+              [(ngModel)]="model.password" 
+              required 
+              minlength="8"
+              #password="ngModel"
+              [ngClass]="{
+                'is-invalid': password.invalid && (password.dirty || password.touched),
+                'is-valid': password.valid && (password.dirty || password.touched)
+              }">
+      <div class="invalid-feedback">          
+        <p *ngIf="password.errors?.required">Password is required</p>      
+        <p *ngIf="password.errors?.minlength">Password must be 8 characters long, we need another {{password.errors.minlength.requiredLength - password.errors.minlength.actualLength}} characters </p>          
+      </div>
+    </div>
+  
+    <div class="form-group col-md-6 mb-3">
+      <label>Language</label>
+      <select class="form-control" 
+              name="language" 
+              [(ngModel)]="model.language"
+              #language="ngModel">
+        <option value="">Please select a language</option>
+        <option *ngFor="let lang of langs"
+              [value]="lang">{{lang}}
+        </option>
+      </select>
+    </div>
+  
+  <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Submit</button>
+  <pre>{{ f.value | json }}</pre>
+</form>
